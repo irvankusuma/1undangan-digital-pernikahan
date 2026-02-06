@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DeviceType {
+  mobile
+  desktop
+}
+
+enum PaymentType {
+  bank
+  ewallet
+}
+
+model User {
+  id        String       @id @default(cuid())
+  name      String
+  email     String       @unique
+  password  String
+  createdAt DateTime     @default(now())
+  invitations Invitation[]
+}
+
+model Invitation {
+  id          String           @id @default(cuid())
+  slug        String           @unique
+  eventName   String
+  hostName    String
+  eventDate   DateTime
+  location    String
+  mapsEmbed   String
+  gallery     String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
+  guests      Guest[]
+  viewers     Viewer[]
+  payments    PaymentMethod[]
+  captions    CaptionTemplate[]
+  musicTracks MusicTrack[]
+}
+
+model Guest {
+  id           String      @id @default(cuid())
+  name         String
+  attendance   String
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId String
+  createdAt    DateTime    @default(now())
+}
+
+model Viewer {
+  id           String      @id @default(cuid())
+  visitedAt    DateTime    @default(now())
+  device       DeviceType
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId String
+}
+
+model PaymentMethod {
+  id           String      @id @default(cuid())
+  type         PaymentType
+  provider     String
+  accountName  String
+  accountNumber String
+  qrCodeUrl    String?
+  isActive     Boolean     @default(true)
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId String
+}
+
+model CaptionTemplate {
+  id           String      @id @default(cuid())
+  channel      String
+  template     String
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId String
+  createdAt    DateTime    @default(now())
+}
+
+model MusicTrack {
+  id           String      @id @default(cuid())
+  title        String
+  youtubeUrl   String
+  isDefault    Boolean     @default(false)
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId String
+  createdAt    DateTime    @default(now())
+}
