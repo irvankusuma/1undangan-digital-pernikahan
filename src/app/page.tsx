@@ -77,10 +77,10 @@ export default function HomePage() {
             <h2>Contoh Caption Template Dinamis</h2>
             <div className="card" style={{ marginTop: 16 }}>
               <p style={{ margin: 0 }}>
-                Hai <strong>{{"{{nama_tamu}}"}}</strong>, kami mengundang Anda ke
-                acara <strong>{{"{{nama_acara}}"}}</strong> pada
-                <strong> {{"{{tanggal}}"}}</strong>. Detail lengkap di
-                <strong> {{"{{link_undangan}}"}}</strong>.
+                Hai <strong>{"{{nama_tamu}}"}</strong>, kami mengundang Anda ke
+                acara <strong>{"{{nama_acara}}"}</strong> pada
+                <strong> {"{{tanggal}}"}</strong>. Detail lengkap di
+                <strong> {"{{link_undangan}}"}</strong>.
               </p>
             </div>
           </div>
